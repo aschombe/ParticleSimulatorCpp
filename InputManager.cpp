@@ -24,7 +24,5 @@ bool InputManager::processEvents() {
 	const Uint8* kb = SDL_GetKeyboardState(NULL);
 	SDL_memcpy(numberkeys, kb + SDL_SCANCODE_0, 10);
 	SDL_memcpy(alphakeys, kb + SDL_SCANCODE_A, 26);
-	//space = kb[SDL_SCANCODE_SPACE];
-	//enter = kb[SDL_SCANCODE_RETURN];
 	return false;
 }

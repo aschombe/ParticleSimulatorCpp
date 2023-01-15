@@ -14,10 +14,13 @@ int simulate() {
 	int height, width;
 	height = 1280;
 	width = 720;
+
+	// Initializes SDL window and renderer
 	SDL_Init(SDL_INIT_VIDEO);
 	SDL_Window* window = SDL_CreateWindow("Particle Simulator", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1280, 720, SDL_WINDOW_SHOWN);
 	SDL_Renderer* renderer = SDL_CreateRenderer(window, 0, 0);
 	
+	// Creates list of random particles with random properties
 	vector<Particle> particles = vector<Particle>();
 	/*for (int i = 0; i < 100; i++) {
 		particles.push_back(Particle(rand() % 1280, rand() % 720, rand() % 20 - 10, rand() % 20 - 10, rand() % 10 + 1, rand() % 10 + 2));
@@ -35,6 +38,7 @@ int simulate() {
 			running = false;
 		}
 
+		// Draws the filled circles
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
 		SDL_RenderClear(renderer);
 		SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
@@ -44,7 +48,7 @@ int simulate() {
 		SDL_RenderPresent(renderer);
 		SDL_Delay(10);
 
-		
+		// If spacebar is pressed, pause the physics loop
 		if (input.space) {
 			physicsLoop = !physicsLoop;
 		}
