@@ -52,7 +52,7 @@ int simulate() {
 			physicsLoop = !physicsLoop;
 		}
 
-		Uint64 start = SDL_GetPerformanceCounter();
+		Uint64 FPS, start = SDL_GetPerformanceCounter();
 		if (physicsLoop == true) {
 			for (size_t i = 0; i < particles.size(); i++) {
 				particles.at(i).move();
@@ -65,6 +65,9 @@ int simulate() {
 			float elapsedMS = (end - start) / (float)SDL_GetPerformanceFrequency() * 1000.0f;
 			elapsedMS = 1 / elapsedMS;
 			cout << elapsedMS << endl;
+			/*FPS = elapsedMS * 1.0 / 1000.f;
+			FPS *= 1.0 / FPS;
+			cout << FPS << endl;*/
 			/*for (size_;t i = 0; i < particles.size(); i++) {
 				for (size_t j = i+1; j < particles.size(); j++) {
 					if (i == j) {
