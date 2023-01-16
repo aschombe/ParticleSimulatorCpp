@@ -18,8 +18,8 @@ int simulate() {
 	// Initializes SDL window and renderer
 	SDL_Init(SDL_INIT_VIDEO);
 	SDL_Window* window = SDL_CreateWindow("Particle Simulator", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1280, 720, SDL_WINDOW_SHOWN);
-	SDL_Renderer* renderer = SDL_CreateRenderer(window, 0, 0);
-	
+	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_ACCELERATED);
+
 	// Creates list of random particles with random properties
 	vector<Particle> particles = vector<Particle>();
 	/*for (int i = 0; i < 100; i++) {
@@ -27,13 +27,12 @@ int simulate() {
 	}*/
 	particles.push_back(Particle(600, 500, -1, 0, 5, 5));
 	particles.push_back(Particle(500, 501, 1, 0, 5, 5));
-	
 
 	bool physicsLoop = true;
 	bool running = true;
 	while (running) {
 		SDL_PumpEvents();
-		
+
 		if (input.processEvents()) {
 			running = false;
 		}
@@ -53,20 +52,31 @@ int simulate() {
 			physicsLoop = !physicsLoop;
 		}
 
-
+		Uint64 start = SDL_GetPerformanceCounter();
 		if (physicsLoop == true) {
-			for (size_t i = 0; i < particles.size(); i++) { 
+			for (size_t i = 0; i < particles.size(); i++) {
+				particles.at(i).move();
+				for (size_t j = i + 1; j < particles.size(); j++) {
+					particles.at(i).collide(particles.at(j));
+					particles.at(i).gravitate(particles.at(j));
+				}
+			}
+			Uint64 end = SDL_GetPerformanceCounter();
+			float elapsedMS = (end - start) / (float)SDL_GetPerformanceFrequency() * 1000.0f;
+			elapsedMS = 1 / elapsedMS;
+			cout << elapsedMS << endl;
+			/*for (size_;t i = 0; i < particles.size(); i++) {
 				for (size_t j = i+1; j < particles.size(); j++) {
 					if (i == j) {
 						continue;
 					}
-					particles.at(j).gravitate(particles.at(i));
 					particles.at(j).collide(particles.at(i));
+					particles.at(j).gravitate(particles.at(i));
 				}
 			}
 			for (size_t o = 0; o < particles.size(); o++) {
 				particles.at(o).move();
-			}
+			}*/
 		}
 
 		if (physicsLoop == false) {

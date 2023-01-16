@@ -9,6 +9,6 @@ public:
 	Uint8 enter;
 	Uint8 mouse[2];
 	int mousepos[2];
-	
+
 	bool processEvents();
 };
