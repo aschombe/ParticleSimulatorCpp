@@ -4,10 +4,11 @@
 
 class Particle {
 public:
-	double x, y, xvel, yvel, mass;
+	double x, y, xvel, yvel, mass, * deltaTime;
 	int size;
 	static constexpr int timescale = 3;
 	static constexpr double G = 20;
+
 	Particle() {
 		this->x = x;
 		this->y = y;
@@ -15,20 +16,22 @@ public:
 		this->yvel = yvel;
 		this->size = size;
 		this->mass = mass;
+		this->deltaTime = nullptr;
 	}
-	Particle(double x, double y, double xvel, double yvel, double mass, int size) {
+	Particle(double x, double y, double xvel, double yvel, double mass, int size, double* deltaTime) {
 		this->x = x;
 		this->y = y;
 		this->xvel = xvel;
 		this->yvel = yvel;
 		this->size = size;
 		this->mass = mass;
+		this->deltaTime = deltaTime;
 	}
 
 	void move() {
 		for (int i = 0; i < timescale; i++) {
-			x += xvel / (1.0 * timescale);
-			y += yvel / (1.0 * timescale);
+			x += xvel / (1.0 * timescale) * *deltaTime;
+			y += yvel / (1.0 * timescale) * *deltaTime;
 		}
 	}
 
@@ -41,8 +44,8 @@ public:
 		angle = atan2(dy, dx);
 		force = (G * mass * other.mass) / ((dist * dist));
 
-		xvel += force * cos(angle) / (2.0 * mass) * (1.0 * timescale);
-		yvel += force * sin(angle) / (2.0 * mass) * (1.0 * timescale);
+		xvel += force * cos(angle) / (2.0 * mass) * (1.0 * timescale) * *deltaTime;
+		yvel += force * sin(angle) / (2.0 * mass) * (1.0 * timescale) * *deltaTime;
 		/*other.xvel += force * cos(angle) / (2.0 * other.mass);
 		other.yvel += force * sin(angle) / (2.0 * other.mass);*/
 	}
